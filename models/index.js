@@ -33,8 +33,16 @@ pageSchema.virtual('route').get(function () {
 pageSchema.statics.findByTag = function(tagSearch){
     return this.find({
         tag: {$elemMatch: {$eq: tagSearch}}
-    }).exec()
-}
+    }).exec();
+};
+
+pageSchema.statics.findBySimilarTag = function(urlTitle) {
+    return this.findOne({urlTitle: urlTitle}).exec()
+    .then(function(page) {
+        return Page.find({tag: {$in: page.tag}, urlTitle: {$ne: urlTitle}}).exec();
+    });
+
+};
 
 pageSchema.pre('validate', function(next) {
     console.log(this);

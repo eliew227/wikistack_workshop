@@ -42,9 +42,18 @@ router.get('/add', function(req, res, next) {
 router.get('/search', function(req,res,next){
     Page.findByTag(req.query.tag)
     .then(function(searchHits){
-        res.render('index', {pages: searchHits})
-    })
-})
+        res.render('index', {pages: searchHits});
+    });
+});
+
+router.get('/:urlTitle/similar', function(req, res, next) {
+    var urlTitle = req.params.urlTitle;
+    Page.findBySimilarTag(urlTitle)
+    .then(function(searchHits){
+        res.render('index', {pages: searchHits});
+    });
+});
+
 router.get('/:urlTitle', function(req, res, next) {
     Page.findOne({urlTitle: req.params.urlTitle}).exec()
     .then(function (page) {
@@ -54,3 +63,4 @@ router.get('/:urlTitle', function(req, res, next) {
     })
     .then(null, next);
 });
+
