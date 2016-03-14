@@ -3,9 +3,11 @@ var express = require('express');
 var app = express();
 var morgan = require('morgan');
 var swig = require('swig');
+var filter = require('./filters')(swig);
 var bodyParser = require('body-parser');
 var wikiRouter = require('./routes/wiki');
 var path = require('path');
+
 // var fs = require('fs');
 // var mime = require('mime');
 // var socketio = require('socket.io');

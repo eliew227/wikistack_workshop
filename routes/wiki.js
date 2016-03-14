@@ -5,8 +5,20 @@ var Page = models.Page;
 var User = models.User;
 module.exports = router;
 
+var errorFunc = 
+
 router.get('/', function(req, res, next) {
-    res.redirect('/');
+    Page.find().exec().then(
+    	function(pages){
+    		console.log(pages);
+    		res.render('index', {pages: pages});
+    	},
+        function(error) {
+            res.render('error', {
+                error: error,
+                message: "Save unsuccessful"
+            });
+        });
 });
 
 router.post('/', function(req, res, next) {
@@ -17,13 +29,8 @@ router.post('/', function(req, res, next) {
     page.save()
         .then(function(success) {
                 res.redirect('/wiki/' + success.urlTitle);
-            },
-            function(error) {
-                res.render('error', {
-                    error: error,
-                    message: "Save unsuccessful"
-                });
-            }
+            }, 
+            errorFunc
         );
 });
 
