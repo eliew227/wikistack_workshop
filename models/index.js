@@ -14,9 +14,27 @@ var pageSchema = new Schema({
     author: { type: Schema.Types.ObjectId, ref: 'User' }
 });
 
+var generateUrlTitle = function (title) {
+    if (title) {
+        // Removes all non-alphanumeric characters from title
+        // And make whitespace underscore
+        return title.replace(/\s+/g, '_').replace(/\W/g, '');
+    } else {
+        // Generates random 5 letter string
+        return Math.random().toString(36).substring(2, 7);
+    }
+};
+
 pageSchema.virtual('route').get(function () {
   return '/wiki/' + this.urlTitle;
 });
+
+pageSchema.pre('validate', function(next) {
+    console.log(this);
+    this.urlTitle = generateUrlTitle(this.title);
+    next();
+});
+
 
 var userSchema = new Schema({
     name: { type: String, required: true },
