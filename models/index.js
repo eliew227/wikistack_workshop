@@ -5,7 +5,7 @@ mongoose.connect('mongodb://localhost/wikistack'); // <= db name will be 'wikist
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'mongodb connection error:'));
 var Schema = mongoose.Schema;
-var Page = new Schema({
+var pageSchema = new Schema({
     title: { type: String, required: true },
     urlTitle: { type: String, required: true },
     content: { type: String, required: true },
@@ -14,11 +14,11 @@ var Page = new Schema({
     author: { type: Schema.Types.ObjectId, ref: 'User' }
 });
 
-Page.virtual('route').get(function () {
+pageSchema.virtual('route').get(function () {
   return '/wiki/' + this.urlTitle;
 });
 
-var User = new Schema({
+var userSchema = new Schema({
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true }
 });

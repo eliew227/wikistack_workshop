@@ -4,7 +4,7 @@ var app = express();
 var morgan = require('morgan');
 var swig = require('swig');
 var bodyParser = require('body-parser');
-var makesRouter = require('./routes');
+var wikiRouter = require('./routes/wiki');
 var path = require('path');
 // var fs = require('fs');
 // var mime = require('mime');
@@ -25,7 +25,7 @@ app.use(bodyParser.json()); // would be for AJAX requests
 
 
 // modular routing that uses io inside it
-// app.use('/', makesRouter(io));
+app.use('/wiki', wikiRouter);
 
 // the typical way to use express static middleware.
 app.use(express.static(path.join(__dirname, '/public')));
