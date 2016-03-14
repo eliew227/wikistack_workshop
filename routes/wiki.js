@@ -24,7 +24,8 @@ router.get('/', function(req, res, next) {
 router.post('/', function(req, res, next) {
     var page = new Page({
         title: req.body.title,
-        content: req.body.content
+        content: req.body.content,
+        tag: req.body.tags.split(' ')
     });
     page.save()
         .then(function(success) {
@@ -38,10 +39,18 @@ router.get('/add', function(req, res, next) {
     res.render('addpage');
 });
 
+router.get('/search', function(req,res,next){
+    Page.findByTag(req.query.tag)
+    .then(function(searchHits){
+        res.render('index', {pages: searchHits})
+    })
+})
 router.get('/:urlTitle', function(req, res, next) {
     Page.findOne({urlTitle: req.params.urlTitle}).exec()
     .then(function (page) {
-    	res.render('wikipage', page);
+        console.log(page.tag);
+        var pageTagString = page.tag.join(' ');    
+        res.render('wikipage',{tags: pageTagString, page: page});
     })
     .then(null, next);
 });

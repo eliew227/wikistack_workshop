@@ -1,12 +1,17 @@
 {% extends "layout.html" %}
 
 {% block content %}
-  <h3>{{title}} <small> (<a href="{{urlTitle}}/similar">Similar</a>)</small></h3>
-  <h4>by <a href="{{author}}">{{author}}</a></h4>
-  <div>PLACEHOLDER TAG LIST</div>
+  <h3>{{page.title}} <small> (<a href="{{page.urlTitle}}/similar">Similar</a>)</small></h3>
+  <h4>by <a href="{{page.author}}">{{page.author}}</a></h4>
+  <ul class="horizontal_list">
+    {% for tag in page.tag %}
+    <!-- <li>{{ page | pageLink }}</li> -->
+    <li><a href='/wiki/search?tag={{tag}}'>{{tag}}</a></li>
+    {% endfor %}
+</ul>
   <hr/>
-  <div><a href="{{author}}">{{author}}</a></div>
-  <div class="page-body">{{content}}</div>
+  <div><a href="{{page.author}}">{{page.author}}</a></div>
+  <div class="page-body">{{page.content}}</div>
   <hr/>
   <a href="PLACEHOLDER_URL_TITLE/edit" class="btn btn-primary">edit this page</a>
   <a href="PLACEHOLDER_URL_TITLE/delete" class="btn btn-danger">delete this page</a>

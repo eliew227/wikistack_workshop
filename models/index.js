@@ -11,7 +11,8 @@ var pageSchema = new Schema({
     content: { type: String, required: true },
     date: { type: Date, default: Date.now },
     status: { type: String, enum: ['open', 'closed'] },
-    author: { type: Schema.Types.ObjectId, ref: 'User' }
+    author: { type: Schema.Types.ObjectId, ref: 'User' },
+    tag: [{type:String}]
 });
 
 var generateUrlTitle = function (title) {
@@ -28,6 +29,12 @@ var generateUrlTitle = function (title) {
 pageSchema.virtual('route').get(function () {
   return '/wiki/' + this.urlTitle;
 });
+
+pageSchema.statics.findByTag = function(tagSearch){
+    return this.find({
+        tag: {$elemMatch: {$eq: tagSearch}}
+    }).exec()
+}
 
 pageSchema.pre('validate', function(next) {
     console.log(this);
