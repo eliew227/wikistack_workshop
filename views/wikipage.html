@@ -2,17 +2,16 @@
 
 {% block content %}
   <h3>{{page.title}} <small> (<a href="{{page.urlTitle}}/similar">Similar</a>)</small></h3>
-  <h4>by <a href="{{page.author}}">{{page.author}}</a></h4>
-  <ul class="horizontal_list">
-    {% for tag in page.tag %}
-    <!-- <li>{{ page | pageLink }}</li> -->
-    <li><a href='/wiki/search?tag={{tag}}'>{{tag}}</a></li>
-    {% endfor %}
-</ul>
+  <h4>by <a href="{{page.author}}">{{page.author.name}}</a></h4>
   <hr/>
-  <div><a href="{{page.author}}">{{page.author}}</a></div>
+  <div><a href="{{page.author}}">{{page.author.name}}</a></div>
   <div class="page-body">{{page.content}}</div>
   <hr/>
+  <ul class="horizontal_list">
+    {% for tag in page.tag %}
+      <li><a href='/wiki/search?tag={{tag}}'>{{tag}}</a></li>
+    {% endfor %}
+  </ul>
   <a href="PLACEHOLDER_URL_TITLE/edit" class="btn btn-primary">edit this page</a>
   <a href="PLACEHOLDER_URL_TITLE/delete" class="btn btn-danger">delete this page</a>
 {% endblock %}

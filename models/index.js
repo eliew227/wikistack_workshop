@@ -57,21 +57,17 @@ var userSchema = new Schema({
 });
 
 userSchema.statics.findOrCreate = function(email, name){
-    // assign email and name if this doesn't work
-    return this.findOne({
-        email: {$elemMatch: {$eq: email}}
-    }).exec()
+    return this.findOne({email: email}).exec()
     .then(function(user) {
-        if (user.length === 0) {
-            var newUser = new User({
+        if (!user) {
+            return User.create({
                 name: name,
                 email: email
-            });
-            return newUser.save();
+            })
         } else {
             return user;
         }
-    });
+    }, console.error.bind(console))
 };
 
 
