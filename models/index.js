@@ -45,7 +45,7 @@ pageSchema.statics.findBySimilarTag = function(urlTitle) {
 };
 
 pageSchema.pre('validate', function(next) {
-    console.log(this);
+    //console.log(this);
     this.urlTitle = generateUrlTitle(this.title);
     next();
 });
@@ -55,6 +55,25 @@ var userSchema = new Schema({
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true }
 });
+
+userSchema.statics.findOrCreate = function(email, name){
+    // assign email and name if this doesn't work
+    return this.findOne({
+        email: {$elemMatch: {$eq: email}}
+    }).exec()
+    .then(function(user) {
+        if (user.length === 0) {
+            var newUser = new User({
+                name: name,
+                email: email
+            });
+            return newUser.save();
+        } else {
+            return user;
+        }
+    });
+};
+
 
 var Page = mongoose.model('Page', pageSchema);
 var User = mongoose.model('User', userSchema);

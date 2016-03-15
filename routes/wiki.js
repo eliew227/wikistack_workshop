@@ -10,7 +10,7 @@ var errorFunc =
 router.get('/', function(req, res, next) {
     Page.find().exec().then(
     	function(pages){
-    		console.log(pages);
+    		//console.log(pages);
     		res.render('index', {pages: pages});
     	},
         function(error) {
@@ -22,11 +22,19 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/', function(req, res, next) {
+    User.findOrCreate(req.body.email, req.body.name).then(function(user){
+        console.log(user);
+    });
+
+
     var page = new Page({
         title: req.body.title,
         content: req.body.content,
         tag: req.body.tags.split(' ')
     });
+
+
+
     page.save()
         .then(function(success) {
                 res.redirect('/wiki/' + success.urlTitle);
@@ -57,7 +65,7 @@ router.get('/:urlTitle/similar', function(req, res, next) {
 router.get('/:urlTitle', function(req, res, next) {
     Page.findOne({urlTitle: req.params.urlTitle}).exec()
     .then(function (page) {
-        console.log(page.tag);
+        //console.log(page.tag);
         var pageTagString = page.tag.join(' ');    
         res.render('wikipage',{tags: pageTagString, page: page});
     })
